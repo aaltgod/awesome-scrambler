@@ -3,6 +3,8 @@ package awesome_scrambler
 import (
 	"context"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+
 	"log"
 
 	"github.com/alyaskastorm/awesome-scrambler/internal/delivery/http/api"
@@ -23,6 +25,7 @@ func RunApp() {
 	h := api.NewHandler(db)
 
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{}))
 
 	e.POST("/api/encrypt_text", h.EncryptText)
 	e.POST("/api/get_cipher_text", h.GetCipherText)
