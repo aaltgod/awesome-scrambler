@@ -1,0 +1,15 @@
+### Send POST request with json body
+POST http://localhost:5000/api/encrypt_text
+Content-Type: application/json
+
+{
+  "text": "content"
+}
+
+### Send POST request with json body
+POST http://localhost:5000/api/get_cipher_text
+Content-Type: application/json
+
+{
+  "link": ""
+}

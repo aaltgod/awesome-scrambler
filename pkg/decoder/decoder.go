@@ -1,0 +1,4 @@
+package decoder
+
+
+func Decode(){}
