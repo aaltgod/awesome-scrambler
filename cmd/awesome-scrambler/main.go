@@ -1,8 +1,9 @@
 package main
 
 import (
-	scrambler "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler"
 	"log"
+
+	scrambler "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler"
 )
 
 func main() {

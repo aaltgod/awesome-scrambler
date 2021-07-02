@@ -11,5 +11,5 @@ POST http://localhost:5000/api/get_cipher_text
 Content-Type: application/json
 
 {
-  "link": ""
+  "link": "jIrHKQ"
 }

@@ -4,10 +4,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
+
+	"github.com/alyaskastorm/awesome-scrambler/internal/repository"
+	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
+	"github.com/alyaskastorm/awesome-scrambler/pkg/random-string"
 )
 
 type Handler struct {
-	db string
+	db repository.Storage
 }
 
 type Text struct {
@@ -20,8 +24,8 @@ type CipherText struct {
 	Link string `json:"link,omitempty"`
 }
 
-func NewHandler(db string) *Handler {
-	return &Handler{db: "Data base"}
+func NewHandler(db repository.Storage) *Handler {
+	return &Handler{db: db}
 }
 
 func (h *Handler) EncryptText(c echo.Context) error {
@@ -32,9 +36,20 @@ func (h *Handler) EncryptText(c echo.Context) error {
 		return err
 	}
 
+	link := random_string.GetRandomString(6)
+
+	cipherText, key, err := encrypter.Encrypt(text.Text)
+	if err != nil {
+		return err
+	}
+
+	if err = h.db.InsertText(cipherText, link); err != nil {
+		return err
+	}
+
 	response := &CipherText{
-		Key: "qweqwe123",
-		Link: "234234234sfadkgjhsdfg",
+		Key: key,
+		Link: link,
 	}
 
 	return c.JSON(http.StatusAccepted, response)
@@ -48,7 +63,12 @@ func (h *Handler) GetCipherText(c echo.Context) error {
 		return err
 	}
 
-	cipherText := "sdsd"
+	cipherText, err := h.db.GetCipherText(link.Link)
+	if err != nil {
+		log.Println("[GetCipherText-CipherText]: ", err)
+		return err
+	}
+
 	response := &CipherText{
 		CipherText: cipherText,
 	}
