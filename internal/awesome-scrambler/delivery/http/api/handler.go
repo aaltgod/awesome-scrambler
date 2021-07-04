@@ -1,17 +1,17 @@
 package api
 
 import (
+	repository2 "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler/repository"
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
 
-	"github.com/alyaskastorm/awesome-scrambler/internal/repository"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/random-string"
 )
 
 type Handler struct {
-	db repository.Storage
+	db repository2.Storage
 }
 
 type Text struct {
@@ -24,7 +24,7 @@ type CipherText struct {
 	Link string `json:"link,omitempty"`
 }
 
-func NewHandler(db repository.Storage) *Handler {
+func NewHandler(db repository2.Storage) *Handler {
 	return &Handler{db: db}
 }
 
