@@ -10,5 +10,5 @@ export const routes = [
     {
         path: "/ciphertext/:path",
         component: CipherText,
-    }
+    },
 ]

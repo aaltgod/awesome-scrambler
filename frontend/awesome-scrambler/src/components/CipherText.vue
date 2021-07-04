@@ -1,7 +1,9 @@
 <template>
   <div class="cipher-text">
     <router-link to='/'><h2>Home</h2></router-link>
-    <a v-if="cipherText">Your cipher text<br><br>{{ cipherText }}</a>
+    <h3 class="cipher-text" v-if="cipherText">Your cipher text<br><br>
+      <textarea v-model="cipherText"> {{ cipherText }} </textarea>
+    </h3>
   </div>
 </template>
 
@@ -35,3 +37,11 @@ export default {
   }
 }
 </script>
+<style>
+
+textarea {
+  width: 490px;
+  height: 213px;
+  font-family: 'Audiowide', sans-serif;
+}
+</style>
