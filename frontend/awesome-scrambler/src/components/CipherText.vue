@@ -1,7 +1,7 @@
 <template>
   <div class="cipher-text">
     <router-link to='/'><h2>Home</h2></router-link>
-    <a v-if="cipherText">Your cipher text<br>{{ cipherText }}</a>
+    <a v-if="cipherText">Your cipher text<br><br>{{ cipherText }}</a>
   </div>
 </template>
 

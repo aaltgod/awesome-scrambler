@@ -1,9 +1,9 @@
 <template>
   <div class="app">
-    <h1>Encode your text</h1>
+    <h1>Encrypt your text</h1>
     <p style="white-space: pre-line;"></p>
     <textarea class="app" v-model="plainText" placeholder="insert text"></textarea>
-    <button class="app" type="submit" v-on:click="encryptText(plainText)">Encode</button>
+    <button class="app" type="submit" v-on:click="encryptText(plainText)">Encrypt</button>
     <h3 class="app" v-if="key">Cipher key: {{ key }}</h3>
     <h3 class="app" v-if="path"><a v-bind:href="'/ciphertext/'+path">{{ path }}</a></h3>
   </div>
