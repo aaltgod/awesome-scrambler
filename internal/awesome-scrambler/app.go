@@ -29,8 +29,6 @@ func RunApp() {
 	db := storage.NewTextStorage()
 	h := api.NewHandler(db)
 
-
-
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{}))
 

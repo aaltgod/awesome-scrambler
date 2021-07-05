@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	log.Println("Service is running")
+	log.Println("Awesome-Scrambler service is running")
 
 	scrambler.RunApp()
 }

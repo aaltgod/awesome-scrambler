@@ -13,5 +13,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	log.Println("Email-Gmail service is running")
+
 	ag.RunApp()
 }

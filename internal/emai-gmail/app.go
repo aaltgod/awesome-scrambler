@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail/repository"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
+	randomString "github.com/alyaskastorm/awesome-scrambler/pkg/random-string"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
@@ -17,10 +19,14 @@ import (
 
 type GmailService struct {
 	Service *gmail.Service
+	Storage *repository.TextStorage
 }
 
-func NewGmailService(gs *gmail.Service) *GmailService {
-	return &GmailService{Service: gs}
+func NewGmailService(gs *gmail.Service, storage *repository.TextStorage) *GmailService {
+	return &GmailService{
+		Service: gs,
+		Storage: storage,
+	}
 }
 
 func OAuthGmailService() *gmail.Service {
@@ -122,11 +128,18 @@ func (gs *GmailService) SendMessage(message *gmail.Message) (bool, error) {
 	emailTo := "To: " + sender + "\r\n"
 	subject := "Subject: " + "Your cipher text\n"
 	mime := "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n"
-	msg := []byte(emailTo + subject + subject + mime + "\n" + emailBody)
+	msg := []byte(emailTo + subject + mime + "\n" + emailBody)
 
 	messageToSend.Raw = base64.URLEncoding.EncodeToString(msg)
 
 	_, err = gs.Service.Users.Messages.Send("me", &messageToSend).Do()
+	if err != nil {
+		return false, err
+	}
+
+	link := randomString.GetRandomString(6)
+
+	err = gs.Storage.InsertText(cipherText, link)
 	if err != nil {
 		return false, err
 	}
@@ -168,7 +181,8 @@ func IsSubjectCorrect(message *gmail.Message) bool {
 func RunApp() {
 
 	var (
-		gmailService = NewGmailService(OAuthGmailService())
+		mu = &sync.Mutex{}
+		gmailService = NewGmailService(OAuthGmailService(), repository.NewTextStorage(mu))
 		wg = &sync.WaitGroup{}
 	)
 
