@@ -11,13 +11,13 @@ import (
 )
 
 type CipherText struct {
-	Link string `bson:"link"`
+	Key string `bson:"key"`
 	CipherText string `bson:"cipher_text"`
 }
 
 type Storage interface {
-	InsertText(cipherText, link string) error
-	GetCipherText(link string) (string, error)
+	InsertText(cipherText, key string) error
+	GetCipherText(key string) (string, error)
 }
 
 type TextStorage struct {
@@ -45,7 +45,7 @@ func CreateConnection() (*mongo.Client, error) {
 	return client, err
 }
 
-func (ts *TextStorage) InsertText(cipherText, link string) error {
+func (ts *TextStorage) InsertText(cipherText, key string) error {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -57,7 +57,7 @@ func (ts *TextStorage) InsertText(cipherText, link string) error {
 	collection := client.Database("storage").Collection("text")
 	_, err = collection.InsertOne(context.TODO(), CipherText{
 		CipherText: cipherText,
-		Link: link,
+		Key: key,
 	})
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (ts *TextStorage) InsertText(cipherText, link string) error {
 	return nil
 }
 
-func (ts *TextStorage) GetCipherText(link string) (string, error) {
+func (ts *TextStorage) GetCipherText(key string) (string, error) {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -79,7 +79,7 @@ func (ts *TextStorage) GetCipherText(link string) (string, error) {
 	var result CipherText
 
 	collection := client.Database("storage").Collection("text")
-	err = collection.FindOne(context.TODO(), bson.D{{"link", link}}).Decode(&result)
+	err = collection.FindOne(context.TODO(), bson.D{{"key", key}}).Decode(&result)
 	if err != nil {
 		log.Println("[FIND-ONE]: ", err)
 		return "", err

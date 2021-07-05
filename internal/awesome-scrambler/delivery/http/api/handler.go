@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
-	"github.com/alyaskastorm/awesome-scrambler/pkg/random-string"
 )
 
 type Handler struct {
@@ -21,7 +20,6 @@ type Text struct {
 type CipherText struct {
 	Key string `json:"key,omitempty"`
 	CipherText string `json:"cipher_text,omitempty"`
-	Link string `json:"link,omitempty"`
 }
 
 func NewHandler(db repository2.Storage) *Handler {
@@ -36,34 +34,31 @@ func (h *Handler) EncryptText(c echo.Context) error {
 		return err
 	}
 
-	link := random_string.GetRandomString(6)
-
 	cipherText, key, err := encrypter.Encrypt(text.Text)
 	if err != nil {
 		return err
 	}
 
-	if err = h.db.InsertText(cipherText, link); err != nil {
+	if err = h.db.InsertText(cipherText, key); err != nil {
 		return err
 	}
 
 	response := &CipherText{
 		Key: key,
-		Link: link,
 	}
 
 	return c.JSON(http.StatusAccepted, response)
 }
 
 func (h *Handler) GetCipherText(c echo.Context) error {
-	var link CipherText
+	var request CipherText
 
-	if err := c.Bind(&link); err != nil {
+	if err := c.Bind(&request); err != nil {
 		log.Println("[GetCipherText-BIND]: ", err)
 		return err
 	}
 
-	cipherText, err := h.db.GetCipherText(link.Link)
+	cipherText, err := h.db.GetCipherText(request.Key)
 	if err != nil {
 		log.Println("[GetCipherText-CipherText]: ", err)
 		return err
