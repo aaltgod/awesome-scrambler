@@ -64,7 +64,6 @@ func (ts *TextStorage) InsertText(cipherText, link string) error {
 	}
 	defer client.Disconnect(context.TODO())
 
-
 	return nil
 }
 
