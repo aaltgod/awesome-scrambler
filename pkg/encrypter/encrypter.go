@@ -3,7 +3,7 @@ package encrypter
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"encoding/hex"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"math/rand"
@@ -11,14 +11,14 @@ import (
 
 func Encrypt(plainTextString string) (string, string, error) {
 
-	bytes := make([]byte, 32)
-	if _, err := rand.Read(bytes); err != nil {
+	key := make([]byte, 32)
+
+	if _, err := rand.Read(key); err != nil {
 		log.Println("[RAND-READ]: ", err)
 		return "", "", err
 	}
 
-	keyString := hex.EncodeToString(bytes)
-	key, _ := hex.DecodeString(keyString)
+	keyString := base64.StdEncoding.EncodeToString(key)
 	plaintext := []byte(plainTextString)
 	block, err := aes.NewCipher(key)
 	if err != nil {

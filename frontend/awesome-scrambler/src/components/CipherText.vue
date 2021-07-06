@@ -1,9 +1,11 @@
 <template>
   <div class="cipher-text">
-    <router-link to='/'><h2>Home</h2></router-link>
-    <h3 class="cipher-text" v-if="cipherText">Your cipher text<br><br>
-      <textarea v-model="cipherText"> {{ cipherText }} </textarea>
-    </h3>
+    <h2 class="cipher-text">Key<br></h2>
+    <textarea class="cipher-text" v-model="key" placeholder="insert your key"></textarea>
+    <button class="cipher-text" type="submit" v-on:click="getCipherText(key)">Get ciphertext<br></button>
+    <h2 v-if="cipherText">Your ciphertext<br><br>
+      <textarea class="cipher-text"  > {{ cipherText }} </textarea>
+    </h2>
   </div>
 </template>
 
@@ -14,6 +16,7 @@ export default {
   data: function() {
     return {
       cipherText: "",
+      key: "",
     }
   },
 
@@ -26,7 +29,7 @@ export default {
       axios({
         method: "post",
         url: "http://localhost:5000/api/get_cipher_text",
-        data: {"link": this.$route.params.path},
+        data: {"key": this.key},
         headers: {"content-type": "application/json"}
       }).then( result => {
         this.cipherText = result.data["cipher_text"]
@@ -38,6 +41,10 @@ export default {
 }
 </script>
 <style>
+.cipher-text {
+  font-family: "Audiowide", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
 textarea {
   width: 490px;

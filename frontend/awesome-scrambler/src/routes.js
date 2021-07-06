@@ -8,7 +8,7 @@ export const routes = [
         component: Home,
     },
     {
-        path: "/ciphertext/:path",
+        path: "/ciphertext",
         component: CipherText,
     },
 ]

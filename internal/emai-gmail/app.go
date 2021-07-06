@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail/repository"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
-	randomString "github.com/alyaskastorm/awesome-scrambler/pkg/random-string"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
@@ -114,7 +113,18 @@ func (gs *GmailService) SendMessage(message *gmail.Message) (bool, error) {
 		}
 	}
 
-	unreadMessageBody := message.Snippet
+	if len(message.Payload.Parts) == 0 {
+		return false, nil
+	}
+
+	body := message.Payload.Parts[0].Body.Data
+
+	originalBodyBytes, err := base64.StdEncoding.DecodeString(body)
+	if err != nil {
+		return false, err
+	}
+
+	unreadMessageBody := string(originalBodyBytes)
 
 	cipherText, key, err := encrypter.Encrypt(unreadMessageBody)
 	if err != nil {
@@ -137,9 +147,7 @@ func (gs *GmailService) SendMessage(message *gmail.Message) (bool, error) {
 		return false, err
 	}
 
-	link := randomString.GetRandomString(6)
-
-	err = gs.Storage.InsertText(cipherText, link)
+	err = gs.Storage.InsertText(cipherText, key)
 	if err != nil {
 		return false, err
 	}
@@ -171,11 +179,7 @@ func IsSubjectCorrect(message *gmail.Message) bool {
 			}
 		}
 
-	if subject == "Encrypt" {
-		return true
-	}
-
-	return false
+	return subject == "Encrypt"
 }
 
 func RunApp() {
@@ -187,7 +191,7 @@ func RunApp() {
 	)
 
 	for {
-		time.Sleep(10 * time.Second)
+		time.Sleep(5 * time.Second)
 
 		unreadMessages := gmailService.GetUnreadMessages()
 
