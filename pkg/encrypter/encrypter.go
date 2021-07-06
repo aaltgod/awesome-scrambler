@@ -3,24 +3,28 @@ package encrypter
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	cryptoRand "crypto/rand"
 	"encoding/base64"
-	"fmt"
+	"io"
 	"log"
 	"math/rand"
+	"time"
 )
 
 func Encrypt(plainTextString string) (string, string, error) {
 
-	key := make([]byte, 32)
+	rand.Seed(time.Now().UnixNano())
 
-	if _, err := rand.Read(key); err != nil {
+	keyBytes := make([]byte, 32)
+	if _, err := rand.Read(keyBytes); err != nil {
 		log.Println("[RAND-READ]: ", err)
 		return "", "", err
 	}
 
-	keyString := base64.StdEncoding.EncodeToString(key)
+
+	key := base64.StdEncoding.EncodeToString(keyBytes)
 	plaintext := []byte(plainTextString)
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(keyBytes)
 	if err != nil {
 		log.Println("[NEW-CIPHER]: ", err)
 		return "", "", err
@@ -32,8 +36,14 @@ func Encrypt(plainTextString string) (string, string, error) {
 		return "", "", err
 	}
 
-	nonce := make([]byte, aesGCM.NonceSize())
-	cipherText := aesGCM.Seal(nonce, nonce, plaintext, nil)
+	nonce := make([]byte, 12)
+	if _, err := io.ReadFull(cryptoRand.Reader, nonce); err != nil {
+		log.Println("[READ-FULL]: ", err)
+		return "", "", err
+	}
 
-	return fmt.Sprintf("%x", cipherText), keyString, nil
+	cipherTextBytes := aesGCM.Seal(nonce, nonce, plaintext, nil)
+	cipherText := base64.StdEncoding.EncodeToString(cipherTextBytes)
+
+	return cipherText, key, nil
 }
