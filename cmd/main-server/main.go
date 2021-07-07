@@ -4,7 +4,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 
-	scrambler "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler"
+	scrambler "github.com/alyaskastorm/awesome-scrambler/internal/main-server"
 )
 
 func main() {

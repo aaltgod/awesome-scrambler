@@ -1,7 +1,7 @@
 package api
 
 import (
-	repository2 "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler/repository"
+	repository2 "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"

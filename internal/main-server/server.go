@@ -1,9 +1,9 @@
-package awesome_scrambler
+package main_server
 
 import (
 	"context"
-	"github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler/delivery/http/api"
-	storage "github.com/alyaskastorm/awesome-scrambler/internal/awesome-scrambler/repository"
+	"github.com/alyaskastorm/awesome-scrambler/internal/main-server/delivery/http/api"
+	storage "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoLog "github.com/labstack/gommon/log"
