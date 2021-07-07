@@ -40,7 +40,7 @@ func RunApp() {
 	e.POST("/api/get_cipher_text", h.GetCipherText)
 
 	go func(){
-		if err := e.Start(":5000"); err != nil && err != http.ErrServerClosed {
+		if err := e.Start(":"+os.Getenv("HTTP_BACKEND_PORT")); err != nil && err != http.ErrServerClosed {
 			e.Logger.Fatal("The service is shutting down")
 		}
 	}()

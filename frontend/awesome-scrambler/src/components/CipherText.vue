@@ -4,7 +4,7 @@
     <textarea class="cipher-text" v-model="key" placeholder="insert your key"></textarea>
     <button class="cipher-text" type="submit" v-on:click="getCipherText(key)">Get ciphertext<br></button>
     <h2 v-if="cipherText">Your ciphertext<br><br>
-      <textarea class="cipher-text"  > {{ cipherText }} </textarea>
+      <textarea class="cipher-text" v-model="cipherText" />
     </h2>
   </div>
 </template>
