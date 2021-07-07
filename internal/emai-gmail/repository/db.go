@@ -51,6 +51,7 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 	if err != nil {
 		return err
 	}
+	defer client.Disconnect(context.TODO())
 
 	collection := client.Database("storage").Collection("text")
 	_, err = collection.InsertOne(context.TODO(), CipherText{
@@ -60,7 +61,6 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 	if err != nil {
 		return err
 	}
-	defer client.Disconnect(context.TODO())
 
 	return nil
 }

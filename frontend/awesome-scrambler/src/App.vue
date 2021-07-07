@@ -21,6 +21,9 @@ export default {}
   color: #eec49a;
   margin-top: 60px;
 }
+h1 {
+  color: #eec49a;
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -29,5 +32,4 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-
 </style>

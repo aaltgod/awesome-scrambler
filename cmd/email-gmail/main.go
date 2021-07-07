@@ -16,4 +16,6 @@ func main() {
 	log.Println("Email-Gmail service is running")
 
 	ag.RunApp()
+
+	log.Println("Awesome-Scrambler service is shutdown")
 }

@@ -30,7 +30,9 @@ func RunApp() {
 	h := api.NewHandler(db)
 
 	e := echo.New()
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{}))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3220"},
+	}))
 
 	e.Logger.SetLevel(echoLog.INFO)
 

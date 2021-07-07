@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail/repository"
+	template "github.com/alyaskastorm/awesome-scrambler/pkg/email-template"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -131,7 +132,7 @@ func (gs *GmailService) SendMessage(message *gmail.Message) (bool, error) {
 		return false, err
 	}
 
-	emailBody := fmt.Sprintf("Key: %s\n\n%s", key, cipherText)
+	emailBody := template.GenerateTemplate(sender, key, cipherText)
 
 	var messageToSend gmail.Message
 

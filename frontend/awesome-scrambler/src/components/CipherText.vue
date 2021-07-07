@@ -20,15 +20,11 @@ export default {
     }
   },
 
-  mounted: function() {
-    this.getCipherText()
-  },
-
   methods: {
     getCipherText: function() {
       axios({
         method: "post",
-        url: "http://localhost:5000/api/get_cipher_text",
+        url: process.env.VUE_APP_API_URL+"/api/get_cipher_text",
         data: {"key": this.key},
         headers: {"content-type": "application/json"}
       }).then( result => {
@@ -40,12 +36,12 @@ export default {
   }
 }
 </script>
+
 <style>
 .cipher-text {
   font-family: "Audiowide", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-
 textarea {
   width: 490px;
   height: 213px;

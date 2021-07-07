@@ -53,6 +53,7 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 	if err != nil {
 		return err
 	}
+	defer client.Disconnect(context.TODO())
 
 	collection := client.Database("storage").Collection("text")
 	_, err = collection.InsertOne(context.TODO(), CipherText{
@@ -62,7 +63,6 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 	if err != nil {
 		return err
 	}
-	defer client.Disconnect(context.TODO())
 
 	return nil
 }
@@ -75,6 +75,7 @@ func (ts *TextStorage) GetCipherText(key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer client.Disconnect(context.TODO())
 
 	var result CipherText
 
@@ -84,7 +85,6 @@ func (ts *TextStorage) GetCipherText(key string) (string, error) {
 		log.Println("[FIND-ONE]: ", err)
 		return "", err
 	}
-	defer client.Disconnect(context.TODO())
 
 	return result.CipherText, nil
 }

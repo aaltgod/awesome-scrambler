@@ -10,4 +10,6 @@ func main() {
 	log.Println("Awesome-Scrambler service is running")
 
 	scrambler.RunApp()
+
+	log.Println("Awesome-Scrambler service is shutdown")
 }
