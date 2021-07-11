@@ -1,15 +1,10 @@
 version: '3.1'
 services:
-  awesome-scrambler:
-    image
-
-  email-gmail:
-    image
-
   database:
     image: mongo:latest
     restart: always
     container_name: my-mongo-container
+    command: mongod --bind_ip_all
     environment:
       MONGO_INITDB_DATABASE: storage
     volumes:
@@ -17,3 +12,31 @@ services:
       - ./mongo-volume:/data/db
     ports:
       - "27017:27017"
+
+  main-server:
+    build:
+      context: .
+      dockerfile: docker/main-server.dockerfile
+    ports:
+      - "${HTTP_BACKEND_PORT}:${HTTP_BACKEND_PORT}"
+    restart: unless-stopped
+    links:
+      - database
+
+  email-gmail:
+    build:
+      context: .
+      dockerfile: docker/email-gmail.dockerfile
+    ports:
+      - "5005:5005"
+    restart: unless-stopped
+    links:
+      - database
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/awesome-scrambler/Dockerfile
+    ports:
+      - "${HTTP_FRONTED_PORT}:${HTTP_FRONTED_PORT}"
+    restart: unless-stopped

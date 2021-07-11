@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"log"
+	"os"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,7 +30,8 @@ func NewTextStorage() *TextStorage {
 }
 
 func CreateConnection() (*mongo.Client, error) {
-	clientOptions := options.Client().ApplyURI("mongodb://127.0.0.1:27017/storage")
+
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
 
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {

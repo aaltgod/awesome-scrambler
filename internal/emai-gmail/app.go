@@ -5,7 +5,8 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail/repository"
-	template "github.com/alyaskastorm/awesome-scrambler/pkg/email-template"
+	storage "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
+	template "github.com/alyaskastorm/awesome-scrambler/pkg/email-templator"
 	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -184,6 +185,13 @@ func IsSubjectCorrect(message *gmail.Message) bool {
 }
 
 func RunApp() {
+
+	client, err := storage.CreateConnection()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	client.Database("storage").Drop(context.TODO())
+	client.Disconnect(context.TODO())
 
 	var (
 		mu = &sync.Mutex{}

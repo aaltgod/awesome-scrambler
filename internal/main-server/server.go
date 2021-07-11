@@ -30,8 +30,9 @@ func RunApp() {
 	h := api.NewHandler(db)
 
 	e := echo.New()
+	// Set origin for the production
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3220"},
+		AllowOrigins: []string{"*"},
 	}))
 
 	e.Logger.SetLevel(echoLog.INFO)

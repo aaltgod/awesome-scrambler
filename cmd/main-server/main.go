@@ -9,14 +9,14 @@ import (
 
 func main() {
 
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	log.Println("Awesome-Scrambler service is running")
+	log.Println("Main-server service is running")
 
 	scrambler.RunApp()
 
-	log.Println("Awesome-Scrambler service is shutdown")
+	log.Println("Main-server service is shutdown")
 }

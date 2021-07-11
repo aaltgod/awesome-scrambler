@@ -1,4 +1,4 @@
-package email_template
+package email_templator
 
 import (
 	"fmt"
