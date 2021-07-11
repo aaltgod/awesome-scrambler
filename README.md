@@ -42,6 +42,6 @@ MONGODB_URI=*******************************
 Create .env.local in /frontend/awesome-scrambler and add a variable:
 ```
 # Example
-VUE_APP_API_URL=http://localhost:5000
+VUE_APP_API_URL=http://localhost:(HTTP_BACKEND_PORT)
 ```
 Use `docker-compose up --build -d` to build&run this project.
