@@ -18,5 +18,25 @@
         2.6. Сохранение результатов
             2.6.1. Проект загрузить в github.
             2.6.2. В корне проекта должен лежать README.md с описание логики работы сервиса;
-        2.7. Выкладка - Сервис должен запускаться в контейнере docker (можно использовать docker-compose, kubernetes...);
+        2.7. Вы``кладка - Сервис должен запускаться в контейнере docker (можно использовать docker-compose, kubernetes...);
         2.8. Все остальные применяемые технологии выбираются на усмотрение исполнителя
+
+### Technologies
+- go/Echo
+- MongoDB
+- docker/docker-compose
+
+### Build & Run
+Create .env and add following variables:
+```
+CLIENT_ID=*********************
+CLIENT_SECRET=*********************
+ACCESS_TOKEN=*********************
+REFRESH_TOKEN=*********************
+
+HTTP_BACKEND_PORT=******
+HTTP_FRONTED_PORT=******
+
+MONGODB_URI=*******************************
+```
+Use `docker-compose up --build -d` to build&run this project.
