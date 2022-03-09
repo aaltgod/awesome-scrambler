@@ -2,20 +2,20 @@ package main_server
 
 import (
 	"context"
-	"github.com/alyaskastorm/awesome-scrambler/internal/main-server/delivery/http/api"
-	storage "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	echoLog "github.com/labstack/gommon/log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/aaltgod/awesome-scrambler/internal/main-server/delivery/http/api"
+	storage "github.com/aaltgod/awesome-scrambler/internal/main-server/repository"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	echoLog "github.com/labstack/gommon/log"
+
 	"log"
 )
-
 
 func RunApp() {
 
@@ -40,8 +40,8 @@ func RunApp() {
 	e.POST("/api/encrypt_text", h.EncryptText)
 	e.POST("/api/get_cipher_text", h.GetCipherText)
 
-	go func(){
-		if err := e.Start(":"+os.Getenv("HTTP_BACKEND_PORT")); err != nil && err != http.ErrServerClosed {
+	go func() {
+		if err := e.Start(":" + os.Getenv("HTTP_BACKEND_PORT")); err != nil && err != http.ErrServerClosed {
 			e.Logger.Fatal("The service is shutting down")
 		}
 	}()
@@ -57,7 +57,7 @@ func RunApp() {
 		log.Println("Got SIGTERM")
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := e.Shutdown(ctx); err != nil {

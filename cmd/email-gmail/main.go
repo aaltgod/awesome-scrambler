@@ -1,9 +1,10 @@
 package main
 
 import (
-	ag "github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail"
-	"github.com/joho/godotenv"
 	"log"
+
+	ag "github.com/aaltgod/awesome-scrambler/internal/email-gmail"
+	"github.com/joho/godotenv"
 )
 
 func main() {

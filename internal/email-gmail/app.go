@@ -4,18 +4,19 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/alyaskastorm/awesome-scrambler/internal/emai-gmail/repository"
-	storage "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
-	template "github.com/alyaskastorm/awesome-scrambler/pkg/email-templator"
-	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-	"google.golang.org/api/gmail/v1"
-	"google.golang.org/api/option"
 	"log"
 	"os"
 	"sync"
 	"time"
+
+	"github.com/aaltgod/awesome-scrambler/internal/email-gmail/repository"
+	storage "github.com/aaltgod/awesome-scrambler/internal/main-server/repository"
+	template "github.com/aaltgod/awesome-scrambler/pkg/email-templator"
+	"github.com/aaltgod/awesome-scrambler/pkg/encrypter"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/gmail/v1"
+	"google.golang.org/api/option"
 )
 
 type GmailService struct {
@@ -33,17 +34,17 @@ func NewGmailService(gs *gmail.Service, storage *repository.TextStorage) *GmailS
 func OAuthGmailService() *gmail.Service {
 
 	config := oauth2.Config{
-		ClientID: os.Getenv("CLIENT_ID"),
+		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
-		Endpoint: google.Endpoint,
-		RedirectURL: "http://localhost",
+		Endpoint:     google.Endpoint,
+		RedirectURL:  "http://localhost",
 	}
 
 	token := oauth2.Token{
-		AccessToken: os.Getenv("ACCESS_TOKEN"),
+		AccessToken:  os.Getenv("ACCESS_TOKEN"),
 		RefreshToken: os.Getenv("REFRESH_TOKEN"),
-		TokenType: "Bearer",
-		Expiry: time.Now(),
+		TokenType:    "Bearer",
+		Expiry:       time.Now(),
 	}
 
 	var tokenSource = config.TokenSource(context.Background(), &token)
@@ -172,14 +173,14 @@ func IsSubjectCorrect(message *gmail.Message) bool {
 
 	var subject string
 
-	LOOP:
-		for _, v := range message.Payload.Headers{
-			switch v.Name {
-			case "Subject":
-				subject = v.Value
-				break LOOP
-			}
+LOOP:
+	for _, v := range message.Payload.Headers {
+		switch v.Name {
+		case "Subject":
+			subject = v.Value
+			break LOOP
 		}
+	}
 
 	return subject == "Encrypt"
 }
@@ -194,9 +195,9 @@ func RunApp() {
 	client.Disconnect(context.TODO())
 
 	var (
-		mu = &sync.Mutex{}
+		mu           = &sync.Mutex{}
 		gmailService = NewGmailService(OAuthGmailService(), repository.NewTextStorage(mu))
-		wg = &sync.WaitGroup{}
+		wg           = &sync.WaitGroup{}
 	)
 
 	for {

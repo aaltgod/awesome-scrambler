@@ -11,7 +11,7 @@ import (
 )
 
 type CipherText struct {
-	Key string `bson:"key"`
+	Key        string `bson:"key"`
 	CipherText string `bson:"cipher_text"`
 }
 
@@ -57,7 +57,7 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 	collection := client.Database("storage").Collection("text")
 	_, err = collection.InsertOne(context.TODO(), CipherText{
 		CipherText: cipherText,
-		Key: key,
+		Key:        key,
 	})
 	if err != nil {
 		return err
@@ -65,4 +65,3 @@ func (ts *TextStorage) InsertText(cipherText, key string) error {
 
 	return nil
 }
-

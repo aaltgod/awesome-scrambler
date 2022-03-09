@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 
-	scrambler "github.com/alyaskastorm/awesome-scrambler/internal/main-server"
+	"github.com/joho/godotenv"
+
+	scrambler "github.com/aaltgod/awesome-scrambler/internal/main-server"
 )
 
 func main() {

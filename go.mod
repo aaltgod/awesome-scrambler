@@ -1,4 +1,4 @@
-module github.com/alyaskastorm/awesome-scrambler
+module github.com/aaltgod/awesome-scrambler
 
 go 1.16
 

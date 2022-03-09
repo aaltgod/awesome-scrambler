@@ -1,16 +1,17 @@
 package api
 
 import (
-	repository2 "github.com/alyaskastorm/awesome-scrambler/internal/main-server/repository"
-	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
 
-	"github.com/alyaskastorm/awesome-scrambler/pkg/encrypter"
+	repos "github.com/aaltgod/awesome-scrambler/internal/main-server/repository"
+	"github.com/labstack/echo/v4"
+
+	"github.com/aaltgod/awesome-scrambler/pkg/encrypter"
 )
 
 type Handler struct {
-	db repository2.Storage
+	db repos.Storage
 }
 
 type Text struct {
@@ -18,11 +19,11 @@ type Text struct {
 }
 
 type CipherText struct {
-	Key string `json:"key,omitempty"`
+	Key        string `json:"key,omitempty"`
 	CipherText string `json:"cipher_text,omitempty"`
 }
 
-func NewHandler(db repository2.Storage) *Handler {
+func NewHandler(db repos.Storage) *Handler {
 	return &Handler{db: db}
 }
 
@@ -70,5 +71,3 @@ func (h *Handler) GetCipherText(c echo.Context) error {
 
 	return c.JSON(http.StatusAccepted, response)
 }
-
-
